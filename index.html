@@ -42,8 +42,11 @@
             <input type="text" id="recipe-name" placeholder="e.g. Chicken Stir Fry">
           </div>
           <div class="form-group">
-            <label for="serving-size">Serving Size (grams)</label>
-            <input type="number" id="serving-size" min="0" step="any" placeholder="e.g. 250">
+            <label for="serving-size">
+              <input type="checkbox" id="custom-serving-toggle"> Custom Serving Size (grams)
+            </label>
+            <input type="number" id="serving-size" min="0" step="any" placeholder="e.g. 250" disabled>
+            <small id="serving-size-hint" class="hint-text">Serving = full recipe weight</small>
           </div>
         </div>
       </section>

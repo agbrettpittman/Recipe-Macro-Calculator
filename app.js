@@ -159,7 +159,8 @@ let currentRecipeId = null; // null = new recipe
 // ============================================================
 let $listView, $editorView, $recipeGrid, $recipeName, $servingSize,
     $ingredientBody, $addIngredientBtn, $saveBtn, $cancelBtn, $deleteBtn,
-    $nutritionPanel, $recipeTotals, $newRecipeBtn;
+    $nutritionPanel, $recipeTotals, $newRecipeBtn, $customServingToggle,
+    $servingSizeHint;
 
 function cacheDom() {
   $listView        = document.getElementById("recipe-list-view");
@@ -175,6 +176,8 @@ function cacheDom() {
   $nutritionPanel  = document.getElementById("nutrition-panel");
   $recipeTotals    = document.getElementById("recipe-totals");
   $newRecipeBtn    = document.getElementById("new-recipe-btn");
+  $customServingToggle = document.getElementById("custom-serving-toggle");
+  $servingSizeHint = document.getElementById("serving-size-hint");
 }
 
 // ============================================================
@@ -200,9 +203,11 @@ async function showRecipeList() {
   $recipeGrid.innerHTML = recipes.map(r => {
     const totalWeight = calcTotalWeight(r.ingredients);
     const recipeMacros = calcRecipeMacros(r.ingredients);
-    const servMacros = calcServingMacros(recipeMacros, r.servingSizeG, totalWeight);
-    const numServings = totalWeight > 0 && r.servingSizeG > 0
-      ? rd(totalWeight / r.servingSizeG, 1)
+    const hasCustom = r.customServing !== false && r.servingSizeG > 0;
+    const effectiveServing = hasCustom ? r.servingSizeG : totalWeight;
+    const servMacros = calcServingMacros(recipeMacros, effectiveServing, totalWeight);
+    const numServings = totalWeight > 0 && effectiveServing > 0
+      ? rd(totalWeight / effectiveServing, 1)
       : 0;
 
     const calField = MACRO_FIELDS[0];
@@ -253,12 +258,19 @@ async function openEditor(id) {
   if (id) {
     const recipe = await getRecipe(id);
     $recipeName.value = recipe.name || "";
-    $servingSize.value = recipe.servingSizeG || "";
+    const hasCustomServing = recipe.customServing !== false;
+    $customServingToggle.checked = hasCustomServing;
+    $servingSize.value = hasCustomServing ? (recipe.servingSizeG || "") : "";
+    $servingSize.disabled = !hasCustomServing;
+    $servingSizeHint.style.display = hasCustomServing ? "none" : "block";
     $deleteBtn.classList.remove("hidden");
     renderIngredientRows(recipe.ingredients);
   } else {
     $recipeName.value = "";
+    $customServingToggle.checked = false;
     $servingSize.value = "";
+    $servingSize.disabled = true;
+    $servingSizeHint.style.display = "block";
     $deleteBtn.classList.add("hidden");
     renderIngredientRows([blankIngredient()]);
   }
@@ -364,8 +376,9 @@ function readIngredientsFromDOM() {
 
 function updateNutritionPanel() {
   const ingredients = readIngredientsFromDOM();
-  const servingSizeG = parseFloat($servingSize.value) || 0;
   const totalWeight = calcTotalWeight(ingredients);
+  const useCustom = $customServingToggle.checked;
+  const servingSizeG = useCustom ? (parseFloat($servingSize.value) || 0) : totalWeight;
   const recipeMacros = calcRecipeMacros(ingredients);
   const servingMacros = calcServingMacros(recipeMacros, servingSizeG, totalWeight);
   const numServings = totalWeight > 0 && servingSizeG > 0
@@ -446,7 +459,10 @@ async function handleSave() {
 
   const recipe = {
     name,
-    servingSizeG: parseFloat($servingSize.value) || 0,
+    customServing: $customServingToggle.checked,
+    servingSizeG: $customServingToggle.checked
+      ? (parseFloat($servingSize.value) || 0)
+      : 0,
     ingredients: readIngredientsFromDOM(),
   };
 
@@ -463,6 +479,7 @@ async function cloneRecipe(id) {
   if (!original) return;
   const clone = {
     name: original.name + " (Copy)",
+    customServing: original.customServing !== false,
     servingSizeG: original.servingSizeG,
     ingredients: JSON.parse(JSON.stringify(original.ingredients)),
   };
@@ -546,6 +563,13 @@ document.addEventListener("DOMContentLoaded", () => {
   $cancelBtn.addEventListener("click", handleCancel);
   $deleteBtn.addEventListener("click", handleDelete);
   $servingSize.addEventListener("input", updateNutritionPanel);
+  $customServingToggle.addEventListener("change", () => {
+    const checked = $customServingToggle.checked;
+    $servingSize.disabled = !checked;
+    $servingSizeHint.style.display = checked ? "none" : "block";
+    if (!checked) $servingSize.value = "";
+    updateNutritionPanel();
+  });
 
   // Initial load
   showRecipeList();

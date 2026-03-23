@@ -213,6 +213,19 @@ label {
   letter-spacing: 0.5px;
 }
 
+label input[type="checkbox"] {
+  margin-right: var(--space-xs);
+  vertical-align: middle;
+}
+
+.hint-text {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
+  font-style: italic;
+}
+
 /* ── Recipe List View ── */
 #recipe-list-view {
   display: block;
