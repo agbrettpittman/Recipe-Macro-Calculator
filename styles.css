@@ -1,0 +1,600 @@
+/* ── Theme Variables ── */
+:root {
+  --color-bg: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f9fafb;
+  --color-border: #e0e3e8;
+  --color-border-focus: #4a90d9;
+  --color-primary: #4a90d9;
+  --color-primary-hover: #3a7bc8;
+  --color-primary-text: #ffffff;
+  --color-danger: #d9534f;
+  --color-danger-hover: #c9302c;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #5a6270;
+  --color-text-muted: #8c939e;
+  --color-success: #27ae60;
+  --color-warning: #f39c12;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  --font-base: 15px;
+  --font-sm: 13px;
+  --font-xs: 11px;
+  --font-lg: 18px;
+  --font-xl: 24px;
+  --font-2xl: 32px;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ── Reset & Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.app-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.app-header h1 {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.app-header h1 span.icon {
+  font-size: 28px;
+}
+
+.app-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+  font-family: var(--font-family);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--color-primary-text);
+}
+
+.btn-danger:hover {
+  background: var(--color-danger-hover);
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-surface-alt);
+  border-color: var(--color-border-focus);
+}
+
+.btn-sm {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-sm);
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-icon:hover {
+  background: var(--color-danger);
+  color: white;
+  border-color: var(--color-danger);
+}
+
+/* ── Form Inputs ── */
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-base);
+  font-family: var(--font-family);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+label {
+  display: block;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Recipe List View ── */
+#recipe-list-view {
+  display: block;
+}
+
+#recipe-editor-view {
+  display: none;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.list-header h2 {
+  font-size: var(--font-lg);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.recipe-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.recipe-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.recipe-card h3 {
+  font-size: var(--font-lg);
+  margin-bottom: var(--space-sm);
+  color: var(--color-text);
+}
+
+.recipe-card .card-meta {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.recipe-card .card-macros {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xs) var(--space-md);
+  font-size: var(--font-sm);
+}
+
+.recipe-card .card-macros .macro-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.recipe-card .card-macros .macro-label {
+  color: var(--color-text-secondary);
+}
+
+.recipe-card .card-macros .macro-value {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+}
+
+.empty-state p {
+  font-size: var(--font-lg);
+  margin-bottom: var(--space-lg);
+}
+
+/* ── Recipe Editor ── */
+.editor-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.editor-section h2 {
+  font-size: var(--font-lg);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+/* ── Ingredient Table ── */
+.ingredient-table-wrapper {
+  overflow-x: auto;
+  margin-top: var(--space-md);
+}
+
+.ingredient-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+  min-width: 900px;
+}
+
+.ingredient-table thead th {
+  background: var(--color-surface-alt);
+  padding: var(--space-sm) var(--space-sm);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.ingredient-table tbody td {
+  padding: var(--space-xs) var(--space-xs);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.ingredient-table tbody tr:hover {
+  background: var(--color-surface-alt);
+}
+
+.ingredient-table input[type="text"],
+.ingredient-table input[type="number"] {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-sm);
+  border-radius: var(--radius-sm);
+}
+
+.ingredient-table .col-name {
+  min-width: 140px;
+}
+
+.ingredient-table .col-macro {
+  width: 80px;
+}
+
+.ingredient-table .col-action {
+  width: 40px;
+  text-align: center;
+}
+
+.add-ingredient-row {
+  margin-top: var(--space-md);
+}
+
+/* ── Nutrition Summary Panel ── */
+.nutrition-panel {
+  background: var(--color-surface);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  max-width: 360px;
+}
+
+.nutrition-panel h3 {
+  font-size: var(--font-xl);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: var(--space-xs);
+}
+
+.nutrition-panel .serving-info {
+  text-align: center;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  padding-bottom: var(--space-sm);
+  border-bottom: 8px solid var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.nutrition-panel .calories-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-xs) 0;
+  border-bottom: 4px solid var(--color-text);
+}
+
+.nutrition-panel .calories-row .cal-label {
+  font-size: var(--font-lg);
+  font-weight: 700;
+}
+
+.nutrition-panel .calories-row .cal-value {
+  font-size: var(--font-2xl);
+  font-weight: 900;
+}
+
+.nutrition-panel .macro-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-base);
+}
+
+.nutrition-panel .macro-row.thick-border {
+  border-bottom-width: 4px;
+  border-bottom-color: var(--color-text);
+}
+
+.nutrition-panel .macro-row.sub {
+  padding-left: var(--space-lg);
+}
+
+.nutrition-panel .macro-row .macro-name {
+  font-weight: 700;
+}
+
+.nutrition-panel .macro-row.sub .macro-name {
+  font-weight: 400;
+}
+
+.nutrition-panel .macro-row .macro-val {
+  font-weight: 700;
+}
+
+.nutrition-panel .dv-note {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+  text-align: left;
+}
+
+/* ── Summary Row (below ingredient table) ── */
+.summary-row {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.summary-row > .nutrition-panel {
+  flex: 0 0 auto;
+}
+
+.summary-row > .recipe-totals {
+  flex: 1;
+  min-width: 200px;
+}
+
+.recipe-totals h3 {
+  font-size: var(--font-lg);
+  margin-bottom: var(--space-md);
+}
+
+.recipe-totals .total-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-sm);
+}
+
+.recipe-totals .total-item .total-label {
+  color: var(--color-text-secondary);
+}
+
+.recipe-totals .total-item .total-value {
+  font-weight: 600;
+}
+
+.recipe-totals .total-item.highlight {
+  font-size: var(--font-base);
+  font-weight: 600;
+  border-bottom-width: 2px;
+}
+
+/* ── Editor Actions ── */
+.editor-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.editor-actions .btn {
+  min-width: 100px;
+  justify-content: center;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .app-container {
+    padding: var(--space-md);
+  }
+
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .summary-row {
+    flex-direction: column;
+  }
+
+  .nutrition-panel {
+    max-width: 100%;
+  }
+
+  .app-header h1 {
+    font-size: var(--font-lg);
+  }
+}
+
+/* ── Utility ── */
+.hidden {
+  display: none !important;
+}
+
+/* ── Confirm dialog overlay ── */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.confirm-dialog {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.confirm-dialog p {
+  font-size: var(--font-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.confirm-dialog .confirm-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}

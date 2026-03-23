@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Macro Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="app-header">
+    <h1><span class="icon">🥗</span> Recipe Macro Calculator</h1>
+    <button class="btn btn-primary" id="new-recipe-btn">+ New Recipe</button>
+  </header>
+
+  <main class="app-container">
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Recipe List View                            -->
+    <!-- ════════════════════════════════════════════ -->
+    <div id="recipe-list-view">
+      <div class="list-header">
+        <h2>Your Recipes</h2>
+      </div>
+      <div id="recipe-grid" class="recipe-grid">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- Recipe Editor View                          -->
+    <!-- ════════════════════════════════════════════ -->
+    <div id="recipe-editor-view">
+
+      <!-- Recipe Details Section -->
+      <section class="editor-section">
+        <h2>Recipe Details</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="recipe-name">Recipe Name</label>
+            <input type="text" id="recipe-name" placeholder="e.g. Chicken Stir Fry">
+          </div>
+          <div class="form-group">
+            <label for="serving-size">Serving Size (grams)</label>
+            <input type="number" id="serving-size" min="0" step="any" placeholder="e.g. 250">
+          </div>
+        </div>
+      </section>
+
+      <!-- Ingredients Section -->
+      <section class="editor-section">
+        <h2>Ingredients</h2>
+        <p style="font-size: var(--font-sm); color: var(--color-text-muted); margin-bottom: var(--space-sm);">
+          Enter each ingredient's <strong>per-serving</strong> nutrition info (from the label), its label serving size, and how many grams go into this recipe.
+        </p>
+        <div class="ingredient-table-wrapper">
+          <table class="ingredient-table">
+            <thead>
+              <tr>
+                <th>Ingredient</th>
+                <th>Serv. Size (g)</th>
+                <th>Amount (g)</th>
+                <th>Calories</th>
+                <th>Protein (g)</th>
+                <th>Total Fat (g)</th>
+                <th>Sat. Fat (g)</th>
+                <th>Trans Fat (g)</th>
+                <th>Carbs (g)</th>
+                <th>Fiber (g)</th>
+                <th>Sugar (g)</th>
+                <th>Sodium (mg)</th>
+                <th>Chol. (mg)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="ingredient-body">
+              <!-- Rows inserted dynamically -->
+            </tbody>
+          </table>
+        </div>
+        <div class="add-ingredient-row">
+          <button class="btn btn-secondary btn-sm" id="add-ingredient-btn">+ Add Ingredient</button>
+        </div>
+      </section>
+
+      <!-- Nutrition Summary Section -->
+      <section class="editor-section">
+        <h2>Nutrition Summary</h2>
+        <div class="summary-row">
+          <div class="nutrition-panel" id="nutrition-panel">
+            <!-- Populated dynamically -->
+          </div>
+          <div class="recipe-totals" id="recipe-totals">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <div class="editor-actions">
+        <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
+        <button class="btn btn-danger hidden" id="delete-btn">Delete Recipe</button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="save-btn">Save Recipe</button>
+      </div>
+
+    </div><!-- /recipe-editor-view -->
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
