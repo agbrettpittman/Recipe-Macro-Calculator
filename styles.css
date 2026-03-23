@@ -289,6 +289,12 @@ label {
   color: var(--color-text);
 }
 
+.recipe-card .card-actions {
+  margin-top: var(--space-md);
+  display: flex;
+  justify-content: flex-end;
+}
+
 .empty-state {
   text-align: center;
   padding: var(--space-2xl);

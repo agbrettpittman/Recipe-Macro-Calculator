@@ -220,12 +220,24 @@ async function showRecipeList() {
           <div class="macro-item"><span class="macro-label">${fatField.label}</span><span class="macro-value">${fmtMacro(servMacros.totalFat, fatField)}</span></div>
           <div class="macro-item"><span class="macro-label">${carbField.label}</span><span class="macro-value">${fmtMacro(servMacros.carbs, carbField)}</span></div>
         </div>
+        <div class="card-actions">
+          <button class="btn btn-secondary btn-sm clone-recipe-btn" data-id="${r.id}" title="Clone recipe">📋 Clone</button>
+        </div>
       </div>`;
   }).join("");
 
   // Attach click handlers
   $recipeGrid.querySelectorAll(".recipe-card").forEach(card => {
-    card.addEventListener("click", () => openEditor(Number(card.dataset.id)));
+    card.addEventListener("click", (e) => {
+      // Don't open editor when clicking the clone button
+      if (e.target.closest(".clone-recipe-btn")) return;
+      openEditor(Number(card.dataset.id));
+    });
+  });
+
+  // Attach clone handlers
+  $recipeGrid.querySelectorAll(".clone-recipe-btn").forEach(btn => {
+    btn.addEventListener("click", () => cloneRecipe(Number(btn.dataset.id)));
   });
 }
 
@@ -443,6 +455,18 @@ async function handleSave() {
   }
 
   await saveRecipe(recipe);
+  showRecipeList();
+}
+
+async function cloneRecipe(id) {
+  const original = await getRecipe(id);
+  if (!original) return;
+  const clone = {
+    name: original.name + " (Copy)",
+    servingSizeG: original.servingSizeG,
+    ingredients: JSON.parse(JSON.stringify(original.ingredients)),
+  };
+  await saveRecipe(clone);
   showRecipeList();
 }
 
