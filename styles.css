@@ -302,6 +302,20 @@ label input[type="checkbox"] {
   color: var(--color-text);
 }
 
+.recipe-card .card-cost {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-sm);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.recipe-card .card-cost .macro-value {
+  font-weight: 600;
+  color: var(--color-success);
+}
+
 .recipe-card .card-actions {
   margin-top: var(--space-md);
   display: flex;
@@ -487,6 +501,14 @@ label input[type="checkbox"] {
   font-weight: 700;
 }
 
+.nutrition-panel .cost-row {
+  border-bottom: 4px solid var(--color-text);
+}
+
+.nutrition-panel .cost-row .macro-val {
+  color: var(--color-success);
+}
+
 .nutrition-panel .dv-note {
   font-size: var(--font-xs);
   color: var(--color-text-muted);
@@ -536,6 +558,10 @@ label input[type="checkbox"] {
   font-size: var(--font-base);
   font-weight: 600;
   border-bottom-width: 2px;
+}
+
+.recipe-totals .total-item .cost-highlight {
+  color: var(--color-success);
 }
 
 /* ── Editor Actions ── */

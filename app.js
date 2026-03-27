@@ -127,6 +127,27 @@ function calcServingMacros(recipeMacros, servingSizeG, totalWeightG) {
   return result;
 }
 
+/**
+ * Calculate total recipe cost.
+ * container grams = servingsPerContainer * servingSizeG
+ * cost per gram = costPerContainer / container grams
+ * ingredient cost = cost per gram * amountG
+ */
+function calcRecipeCost(ingredients) {
+  let total = 0;
+  for (const ing of ingredients) {
+    const cost = parseFloat(ing.costPerContainer) || 0;
+    const servings = parseFloat(ing.servingsPerContainer) || 0;
+    const servSize = parseFloat(ing.servingSizeG) || 0;
+    const amount = parseFloat(ing.amountG) || 0;
+    if (cost <= 0 || servings <= 0 || servSize <= 0 || amount <= 0) continue;
+    const containerGrams = servings * servSize;
+    const costPerGram = cost / containerGrams;
+    total += costPerGram * amount;
+  }
+  return total;
+}
+
 /** Sum of all ingredient amountG values. */
 function calcTotalWeight(ingredients) {
   let total = 0;
@@ -225,6 +246,14 @@ async function showRecipeList() {
           <div class="macro-item"><span class="macro-label">${fatField.label}</span><span class="macro-value">${fmtMacro(servMacros.totalFat, fatField)}</span></div>
           <div class="macro-item"><span class="macro-label">${carbField.label}</span><span class="macro-value">${fmtMacro(servMacros.carbs, carbField)}</span></div>
         </div>
+        ${(() => {
+          const recipeCost = calcRecipeCost(r.ingredients);
+          if (recipeCost > 0) {
+            const costServing = numServings > 0 ? recipeCost / numServings : 0;
+            return `<div class="card-cost"><span class="macro-label">Cost/Serving</span><span class="macro-value">$${rd(costServing, 2)}</span></div>`;
+          }
+          return '';
+        })()}
         <div class="card-actions">
           <button class="btn btn-secondary btn-sm clone-recipe-btn" data-id="${r.id}" title="Clone recipe">📋 Clone</button>
         </div>
@@ -284,6 +313,8 @@ function blankIngredient() {
     servingSizeG: "",
     amountG: "",
     macros: emptyMacros(),
+    costPerContainer: "",
+    servingsPerContainer: "",
   };
 }
 
@@ -312,6 +343,10 @@ function createIngredientRow(ing, idx) {
     const val = ing.macros[f.key] ?? "";
     html += `<td class="col-macro"><input type="number" value="${escAttr(val)}" data-macro="${f.key}" min="0" step="any" placeholder="0"></td>`;
   }
+
+  // Cost cells
+  html += `<td class="col-macro"><input type="number" value="${escAttr(ing.costPerContainer)}" data-field="costPerContainer" min="0" step="any" placeholder="$"></td>`;
+  html += `<td class="col-macro"><input type="number" value="${escAttr(ing.servingsPerContainer)}" data-field="servingsPerContainer" min="0" step="any" placeholder="#"></td>`;
 
   // Remove button cell
   html += `<td class="col-action"><button class="btn-icon remove-ingredient-btn" title="Remove ingredient">✕</button></td>`;
@@ -361,6 +396,8 @@ function readIngredientsFromDOM() {
       servingSizeG: row.querySelector('[data-field="servingSizeG"]').value,
       amountG: row.querySelector('[data-field="amountG"]').value,
       macros: {},
+      costPerContainer: row.querySelector('[data-field="costPerContainer"]').value,
+      servingsPerContainer: row.querySelector('[data-field="servingsPerContainer"]').value,
     };
     for (const f of MACRO_FIELDS) {
       ing.macros[f.key] = row.querySelector(`[data-macro="${f.key}"]`).value;
@@ -425,6 +462,20 @@ function updateNutritionPanel() {
 
   $nutritionPanel.innerHTML = panelHtml;
 
+  // Cost calculations
+  const totalRecipeCost = calcRecipeCost(ingredients);
+  const costPerServing = (totalWeight > 0 && servingSizeG > 0)
+    ? totalRecipeCost * (servingSizeG / totalWeight)
+    : 0;
+
+  if (totalRecipeCost > 0) {
+    panelHtml += `
+      <div class="macro-row cost-row">
+        <span class="macro-name">Cost per Serving</span>
+        <span class="macro-val">$${rd(costPerServing, 2)}</span>
+      </div>`;
+  }
+
   // Build recipe totals HTML
   let totalsHtml = `<h3>Full Recipe Totals</h3>`;
   totalsHtml += `
@@ -432,6 +483,19 @@ function updateNutritionPanel() {
       <span class="total-label">Total Weight</span>
       <span class="total-value">${rd(totalWeight, 1)}g</span>
     </div>`;
+
+  if (totalRecipeCost > 0) {
+    totalsHtml += `
+      <div class="total-item highlight">
+        <span class="total-label">Total Recipe Cost</span>
+        <span class="total-value">$${rd(totalRecipeCost, 2)}</span>
+      </div>`;
+    totalsHtml += `
+      <div class="total-item highlight">
+        <span class="total-label">Cost per Serving</span>
+        <span class="total-value cost-highlight">$${rd(costPerServing, 2)}</span>
+      </div>`;
+  }
 
   for (const f of MACRO_FIELDS) {
     totalsHtml += `
